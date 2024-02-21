@@ -14,7 +14,7 @@
 
 # Containers & pod metrics
 
-- query: (sum(irate(container_cpu_usage_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}[2m]) * 100) by (container, pod, node)) > 0
+- query: (sum(irate(container_cpu_usage_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}[2m]) * 100) by (container, pod, instance)) > 0
   metricName: containerCPU
 
 - query: sum(container_memory_rss{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}) by (container, pod, node)
@@ -22,42 +22,21 @@
 
 # Kubelet & CRI-O runtime metrics
 
-- query: sum(irate(process_cpu_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",service="kubelet",job="kubelet"}[2m]) * 100) by (node) and on (node) kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}
+- query: sum(irate(process_cpu_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}[2m]) * 100) by (nstance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletCPU
 
-- query: sum(process_resident_memory_bytes{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",service="kubelet",job="kubelet"}) by (node) and on (node) kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}
+- query: sum(process_resident_memory_bytes{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}) by (instance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletMemory
-
-- query: sum(irate(process_cpu_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",service="kubelet",job="crio"}[2m]) * 100) by (node) and on (node) kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}
-  metricName: crioCPU
-
-- query: sum(process_resident_memory_bytes{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",service="kubelet",job="crio"}) by (node) and on (node) kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}
-  metricName: crioMemory
-
-- query: irate(container_runtime_crio_operations_latency_microseconds{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",operation_type="network_setup_pod"}[2m]) > 0
-  metricName: containerNetworkSetupLatency
 
 # Node metrics: CPU & Memory
 
 - query: (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")) > 0
   metricName: nodeCPU-Workers
 
-- query: (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="master"}, "instance", "$1", "node", "(.+)")) > 0
-  metricName: nodeCPU-Masters
-
-- query: (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="infra"}, "instance", "$1", "node", "(.+)")) > 0
-  metricName: nodeCPU-Infra
-
 # We compute memory utilization by substrating available memory to the total
-
-- query: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="master"}, "instance", "$1", "node", "(.+)")
-  metricName: nodeMemoryUtilization-Masters
 
 - query: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: nodeMemoryUtilization-Workers
-
-- query: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="infra"}, "instance", "$1", "node", "(.+)")
-  metricName: nodeMemoryUtilization-Infra
 
 # Cluster metrics
 
@@ -83,10 +62,6 @@
   metricName: serviceCount
   instant: true
 
-- query: count(openshift_route_created{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"})
-  metricName: routeCount
-  instant: true
-
 - query: kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"}
   metricName: nodeRoles
 
@@ -105,24 +80,8 @@
   metricName: nodeCPUSeconds-Workers
   instant: true
 
-- query: sum( node_cpu_seconds_total and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="master"}, "instance", "$1", "node", "(.+)") ) by (mode)
-  metricName: nodeCPUSeconds-Masters
-  instant: true
-
-- query: sum( node_cpu_seconds_total and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="infra"}, "instance", "$1", "node", "(.+)") ) by (mode)
-  metricName: nodeCPUSeconds-Infra
-  instant: true
-
-- query: sum (  container_cpu_usage_seconds_total {cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",  id =~ "/system.slice|/system.slice/kubelet.service|/system.slice/ovs-vswitchd.service|/system.slice/crio.service|/kubepods.slice" } and on (node) kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}", role = "worker",role != "infra" } )  by   (   id  )
+- query: sum (container_cpu_usage_seconds_total {cluster=~".+{{.AKS_MC_CLUSTER_NAME}}", id =~"/system.slice|/system.slice/kubelet.service"} and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}", role = "worker",role != "infra" }, "instance", "$1", "node", "(.+)")) by (id)
   metricName: cgroupCPUSeconds-Workers
-  instant: true
-
-- query: sum (  container_cpu_usage_seconds_total {cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",  id =~ "/system.slice|/system.slice/kubelet.service|/system.slice/ovs-vswitchd.service|/system.slice/crio.service|/kubepods.slice" }  and on (node) kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}", role = "master" } )  by   (   id  )
-  metricName: cgroupCPUSeconds-Masters
-  instant: true
-
-- query: sum (  container_cpu_usage_seconds_total {cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",  id =~ "/system.slice|/system.slice/kubelet.service|/system.slice/ovs-vswitchd.service|/system.slice/crio.service|/kubepods.slice" }  and on (node) kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}", role = "infra" } )  by   (   id  )
-  metricName: cgroupCPUSeconds-Infra
   instant: true
 
 - query: sum( container_cpu_usage_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",container!~"POD|"} )  by (namespace)
