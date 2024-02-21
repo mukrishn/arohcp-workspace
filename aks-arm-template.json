@@ -28,11 +28,11 @@
                     {
                         "name": "agentpool",
                         "count": 3,
-                        "vmSize": "Standard_D8ds_v5",
+                        "vmSize": "Standard_D8s_v5",
                         "osDiskSizeGB": 128,
                         "osDiskType": "Ephemeral",
                         "kubeletDiskType": "OS",
-                        "maxPods": 245,
+                        "maxPods": 250,
                         "type": "VirtualMachineScaleSets",
                         "availabilityZones": [
                             "1",
@@ -62,11 +62,11 @@
                     {
                         "name": "userpool",
                         "count": 24,
-                        "vmSize": "Standard_D8ds_v5",
+                        "vmSize": "Standard_D8s_v5",
                         "osDiskSizeGB": 128,
                         "osDiskType": "Ephemeral",
                         "kubeletDiskType": "OS",
-                        "maxPods": 245,
+                        "maxPods": 250,
                         "type": "VirtualMachineScaleSets",
                         "availabilityZones": [
                             "1",
@@ -111,7 +111,7 @@
                 "supportPlan": "KubernetesOfficial",
                 "networkProfile": {
                     "networkPlugin": "azure",
-                    "networkPolicy": "azure",
+                    "networkPolicy": "calico",
                     "networkDataplane": "azure",
                     "loadBalancerSku": "Standard",
                     "serviceCidr": "10.0.0.0/16",
@@ -172,7 +172,7 @@
                 "osDiskSizeGB": 128,
                 "osDiskType": "Ephemeral",
                 "kubeletDiskType": "OS",
-                "maxPods": 245,
+                "maxPods": 250,
                 "type": "VirtualMachineScaleSets",
                 "availabilityZones": [
                     "1",
@@ -213,7 +213,7 @@
                 "osDiskSizeGB": 128,
                 "osDiskType": "Ephemeral",
                 "kubeletDiskType": "OS",
-                "maxPods": 245,
+                "maxPods": 250,
                 "type": "VirtualMachineScaleSets",
                 "availabilityZones": [
                     "1",
