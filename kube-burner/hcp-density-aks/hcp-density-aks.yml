@@ -1,0 +1,90 @@
+---
+global:
+  indexerConfig:
+    esServers: [http://elastic-elk.apps.rsevilla-ocp45-ovn.perf-testing.devcluster.openshift.com]
+    insecureSkipVerify: false
+    defaultIndex: kube-burner
+    type: elastic
+  measurements:
+    - name: podLatency
+  clusterHealth: true
+
+jobs:
+  - name: hcp-density-aks-single-deployment
+    jobIterations: 1
+    qps: 20
+    burst: 20
+    namespacedIterations: true
+    namespace: hcp-density-aks
+    podWait: false
+    waitWhenFinished: true
+    objects:
+      - objectTemplate: templates/deployment.yaml
+        replicas: 20
+        inputVars:
+          name: deployment-pod
+
+      - objectTemplate: templates/deployment_1pod.yaml
+        replicas: 5
+        inputVars:
+          name: deployment-1-pod
+
+      - objectTemplate: templates/deployment_2pods.yaml
+        replicas: 2
+        inputVars:
+          name: deployment-2pods
+
+      - objectTemplate: templates/deployment_3pods.yaml
+        replicas: 15
+        inputVars:
+          name: deployment-3pods
+
+      - objectTemplate: templates/pod.yaml
+        replicas: 61
+        inputVars:
+          name: deployment-pod
+
+      - objectTemplate: templates/secret.yaml
+        replicas: 5
+        inputVars:
+          name: deployment-1-pod
+
+      - objectTemplate: templates/secret.yaml
+        replicas: 4
+        inputVars:
+          name: deployment-2pods
+
+      - objectTemplate: templates/secret.yaml
+        replicas: 45
+        inputVars:
+          name: deployment-3pods
+
+      - objectTemplate: templates/secret.yaml
+        replicas: 56
+        inputVars:
+          name: deployment-podonly
+
+      - objectTemplate: templates/configmap.yaml
+        replicas: 5
+        inputVars:
+          name: deployment-1-pod
+
+      - objectTemplate: templates/configmap.yaml
+        replicas: 4
+        inputVars:
+          name: deployment-2pods
+
+      - objectTemplate: templates/configmap.yaml
+        replicas: 45
+        inputVars:
+          name: deployment-3pods
+
+      - objectTemplate: templates/configmap.yaml
+        replicas: 56
+        inputVars:
+          name: deployment-podonly
+
+      - objectTemplate: templates/service.yaml
+        replicas: 46
+        inputVars:
+          name: deployment-podonly
