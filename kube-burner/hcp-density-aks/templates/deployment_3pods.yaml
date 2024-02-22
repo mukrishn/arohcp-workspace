@@ -35,7 +35,47 @@ spec:
         ports:
          - containerPort: 8080
            protocol: TCP
-        name: {{.name}}
+        name: {{.name}}-1-{{.Replica}}
+        env:
+        - name: ENVVAR1_{{.name}}
+          value: {{.envVar}}
+      - args:  # Container 2 definition
+        - sleep
+        - infinity
+        image: registry.k8s.io/pause:3.1
+        resources:
+          requests:
+            cpu: 39m
+            memory: 138MiB
+        volumeMounts:
+          - name: configmap
+            mountPath: /var/configmap
+          - name: secret
+            mountPath: /var/secret
+        ports:
+         - containerPort: 8080
+           protocol: TCP
+        name: {{.name}}-2-{{.Replica}}
+        env:
+        - name: ENVVAR1_{{.name}}
+          value: {{.envVar}}
+      - args:  # Container 3 definition
+        - sleep
+        - infinity
+        image: registry.k8s.io/pause:3.1
+        resources:
+          requests:
+            cpu: 39m
+            memory: 138MiB
+        volumeMounts:
+          - name: configmap
+            mountPath: /var/configmap
+          - name: secret
+            mountPath: /var/secret
+        ports:
+         - containerPort: 8080
+           protocol: TCP
+        name: {{.name}}-3-{{.Replica}}
         env:
         - name: ENVVAR1_{{.name}}
           value: {{.envVar}}

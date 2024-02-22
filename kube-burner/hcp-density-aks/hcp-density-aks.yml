@@ -20,41 +20,71 @@ jobs:
     waitWhenFinished: true
     objects:
       - objectTemplate: templates/deployment.yaml
-        replicas: 25
+        replicas: 20
         inputVars:
-          name: deployment-1pod
+          name: deployment-pod
 
-      - objectTemplate: templates/deployment.yaml
+      - objectTemplate: templates/deployment_1pod.yaml
+        replicas: 5
+        inputVars:
+          name: deployment-1-pod
+
+      - objectTemplate: templates/deployment_2pods.yaml
         replicas: 2
         inputVars:
           name: deployment-2pods
 
-      - objectTemplate: templates/deployment.yaml
+      - objectTemplate: templates/deployment_3pods.yaml
+        replicas: 15
+        inputVars:
+          name: deployment-3pods
+
+      - objectTemplate: templates/pod.yaml
+        replicas: 61
+        inputVars:
+          name: deployment-pod
+
+      - objectTemplate: templates/secret.yaml
+        replicas: 5
+        inputVars:
+          name: deployment-1-pod
+
+      - objectTemplate: templates/secret.yaml
+        replicas: 4
+        inputVars:
+          name: deployment-2pods
+
+      - objectTemplate: templates/secret.yaml
         replicas: 45
         inputVars:
           name: deployment-3pods
 
-      - objectTemplate: templates/deployment.yaml
-        replicas: 6
+      - objectTemplate: templates/secret.yaml
+        replicas: 56
         inputVars:
-          name: deployment-pod
+          name: deployment-podonly
 
-      - objectTemplate: templates/service.yaml
-        replicas: 12
+      - objectTemplate: templates/configmap.yaml
+        replicas: 5
         inputVars:
-          name: deployment-3pods
+          name: deployment-1-pod
 
-      - objectTemplate: templates/service.yaml
-        replicas: 1
+      - objectTemplate: templates/configmap.yaml
+        replicas: 4
         inputVars:
           name: deployment-2pods
 
-      - objectTemplate: templates/service.yaml
-        replicas: 8
+      - objectTemplate: templates/configmap.yaml
+        replicas: 45
         inputVars:
-          name: deployment-1pod
+          name: deployment-3pods
+
+      - objectTemplate: templates/configmap.yaml
+        replicas: 56
+        inputVars:
+          name: deployment-podonly
 
       - objectTemplate: templates/service.yaml
-        replicas: 6
+        replicas: 46
         inputVars:
-          name: deployment-napod  
+          name: deployment-podonly
