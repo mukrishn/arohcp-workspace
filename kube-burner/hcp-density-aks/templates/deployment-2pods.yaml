@@ -4,7 +4,7 @@ apiVersion: apps/v1
 metadata:
   name: {{.name}}-{{.Replica}}
 spec:
-  replicas: {{.podReplicas}}
+  replicas: 1
   selector:
     matchLabels:
       app: {{.name}}-{{.Replica}}
@@ -18,47 +18,62 @@ spec:
       nodeSelector:
         node-role.kubernetes.io/worker: ""
       containers:
-      - args:
+      - name: {{.name}}-0-{{.Replica}}
+        args:
         - sleep
         - infinity
         image: registry.k8s.io/pause:3.1
         resources:
           requests:
             cpu: 39m
-            memory: 138MiB
+            memory: 138Mi
         volumeMounts:
-          - name: configmap
-            mountPath: /var/configmap
-          - name: secret
-            mountPath: /var/secret
+        - name: secret-{{.Replica}}
+          mountPath: /secret1
+        - name: configmap-{{.Replica}}
+          mountPath: /configmap1
         imagePullPolicy: IfNotPresent
         ports:
          - containerPort: 8080
            protocol: TCP
-        name: {{.name}}-1-{{.Replica}}
         env:
         - name: ENVVAR1_{{.name}}
           value: {{.envVar}}
-      - args:  # Container 2 definition
+      volumes:
+      - name: secret-1
+        secret:
+          secretName: {{.name}}-secret0-{{.Replica}}
+      - name: configmap-1
+        configMap:
+          name: {{.name}}-1
+      - name: {{.name}}-1-{{.Replica}}
+        args:
         - sleep
         - infinity
         image: registry.k8s.io/pause:3.1
         resources:
           requests:
             cpu: 39m
-            memory: 138MiB
+            memory: 138Mi
         volumeMounts:
-          - name: configmap
-            mountPath: /var/configmap
-          - name: secret
-            mountPath: /var/secret
+        - name: secret-{{.Replica}}
+          mountPath: /secret1
+        - name: configmap-{{.Replica}}
+          mountPath: /configmap1
+        imagePullPolicy: IfNotPresent
         ports:
          - containerPort: 8080
            protocol: TCP
-        name: {{.name}}-2-{{.Replica}}
         env:
         - name: ENVVAR1_{{.name}}
           value: {{.envVar}}
+      volumes:
+      - name: secret-{{.Replica}}
+        secret:
+          secretName: {{.name}}-{{.Replica}}
+      - name: configmap-{{.Replica}}
+        configMap:
+          name: {{.name}}-{{.Replica}}
       # Add not-ready/unreachable tolerations for 15 minutes so that node
       # failure doesn't trigger pod deletion.
       tolerations:
@@ -70,10 +85,3 @@ spec:
         operator: "Exists"
         effect: "NoExecute"
         tolerationSeconds: 900
-      volumes:
-        - name: configmap
-          configMap:
-            name: configmap-{{.Replica}}
-        - name: secret
-          secret:
-            secretName: secret-{{.Replica}}

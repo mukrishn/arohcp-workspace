@@ -1,16 +1,10 @@
 ---
 global:
-  indexerConfig:
-    esServers: [http://elastic-elk.apps.rsevilla-ocp45-ovn.perf-testing.devcluster.openshift.com]
-    insecureSkipVerify: false
-    defaultIndex: kube-burner
-    type: elastic
   measurements:
     - name: podLatency
-  clusterHealth: true
 
 jobs:
-  - name: hcp-density-aks-single-deployment
+  - name: hcp-density-aks
     jobIterations: 1
     qps: 20
     burst: 20
@@ -23,68 +17,71 @@ jobs:
         replicas: 20
         inputVars:
           name: deployment-pod
-
-      - objectTemplate: templates/deployment_1pod.yaml
+          envVar: 55d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d955d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d92857528fe63427c66d5427cc3b61a10a86d5970c4315ced8f0584e1aabc9a696b2414df6268413cb0cdf8828d4fdd2504121e66309b19544325466a8cb2c599307f4ff76eeb64254b81c3fe4969759ff8fd811851d2ff4784c4959eb9af44eda26feb7ede29029c675c317fcc68fc900b52ba28b6e7af3e1d5523e0070776e406371ff6ca1b2437f9e0629b691234edbbeffbabfc305
+      - objectTemplate: templates/deployment-1pod.yaml
         replicas: 5
         inputVars:
           name: deployment-1-pod
-
-      - objectTemplate: templates/deployment_2pods.yaml
+          envVar: 55d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d955d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d92857528fe63427c66d5427cc3b61a10a86d5970c4315ced8f0584e1aabc9a696b2414df6268413cb0cdf8828d4fdd2504121e66309b19544325466a8cb2c599307f4ff76eeb64254b81c3fe4969759ff8fd811851d2ff4784c4959eb9af44eda26feb7ede29029c675c317fcc68fc900b52ba28b6e7af3e1d5523e0070776e406371ff6ca1b2437f9e0629b691234edbbeffbabfc305
+      - objectTemplate: templates/deployment-2pods.yaml
         replicas: 2
         inputVars:
-          name: deployment-2pods
-
-      - objectTemplate: templates/deployment_3pods.yaml
+          name: deployment-2-pods
+          envVar: 55d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d955d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d92857528fe63427c66d5427cc3b61a10a86d5970c4315ced8f0584e1aabc9a696b2414df6268413cb0cdf8828d4fdd2504121e66309b19544325466a8cb2c599307f4ff76eeb64254b81c3fe4969759ff8fd811851d2ff4784c4959eb9af44eda26feb7ede29029c675c317fcc68fc900b52ba28b6e7af3e1d5523e0070776e406371ff6ca1b2437f9e0629b691234edbbeffbabfc305
+      - objectTemplate: templates/deployment-3pods.yaml
         replicas: 15
         inputVars:
-          name: deployment-3pods
-
-      - objectTemplate: templates/pod.yaml
-        replicas: 61
+          name: deployment-3-pods
+          envVar: 55d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d955d897a9c68ea8a48e59f5ec9cf40aa7ffbdfd33e40bf71ee0ffdba1611518586015791965693165b030b20af4d0979a83d098fcf289e9e9fcbb170df5b144314f3d8d5c0755e0415ed5f8ec53a20f0ac8344e719e0993b3ddecd1d6e7b5f9a4b4cf78c9b9a6f328d754d92857528fe63427c66d5427cc3b61a10a86d5970c4315ced8f0584e1aabc9a696b2414df6268413cb0cdf8828d4fdd2504121e66309b19544325466a8cb2c599307f4ff76eeb64254b81c3fe4969759ff8fd811851d2ff4784c4959eb9af44eda26feb7ede29029c675c317fcc68fc900b52ba28b6e7af3e1d5523e0070776e406371ff6ca1b2437f9e0629b691234edbbeffbabfc305
+      - objectTemplate: templates/secret.yaml
+        replicas: 20
         inputVars:
           name: deployment-pod
-
       - objectTemplate: templates/secret.yaml
         replicas: 5
         inputVars:
           name: deployment-1-pod
-
       - objectTemplate: templates/secret.yaml
-        replicas: 4
+        replicas: 2
         inputVars:
-          name: deployment-2pods
-
+          name: deployment-2-pods-secret0
       - objectTemplate: templates/secret.yaml
-        replicas: 45
+        replicas: 2
         inputVars:
-          name: deployment-3pods
-
+          name: deployment-2-pods-secret1
       - objectTemplate: templates/secret.yaml
-        replicas: 56
+        replicas: 15
         inputVars:
-          name: deployment-podonly
-
+          name: deployment-3-pods
+      - objectTemplate: templates/configmap.yaml
+        replicas: 20
+        inputVars:
+          name: deployment-pod
       - objectTemplate: templates/configmap.yaml
         replicas: 5
         inputVars:
           name: deployment-1-pod
-
       - objectTemplate: templates/configmap.yaml
-        replicas: 4
+        replicas: 2
         inputVars:
-          name: deployment-2pods
-
+          name: deployment-2-pods
       - objectTemplate: templates/configmap.yaml
-        replicas: 45
+        replicas: 15
         inputVars:
-          name: deployment-3pods
-
-      - objectTemplate: templates/configmap.yaml
-        replicas: 56
-        inputVars:
-          name: deployment-podonly
-
+          name: deployment-3-pods
       - objectTemplate: templates/service.yaml
-        replicas: 46
+        replicas: 20
         inputVars:
-          name: deployment-podonly
+          name: deployment-pod
+      - objectTemplate: templates/service.yaml
+        replicas: 5
+        inputVars:
+          name: deployment-1-pod
+      - objectTemplate: templates/service.yaml
+        replicas: 2
+        inputVars:
+          name: deployment-2-pods
+      - objectTemplate: templates/service.yaml
+        replicas: 15
+        inputVars:
+          name: deployment-3-pods
