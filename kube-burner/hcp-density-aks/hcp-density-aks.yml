@@ -76,7 +76,7 @@ jobs:
         inputVars:
           name: deployment-3-pods-secret2
       - objectTemplate: templates/configmap.yaml
-        replicas: 20
+        replicas: 19
         inputVars:
           name: deployment-pod
       - objectTemplate: templates/configmap.yaml
@@ -108,11 +108,19 @@ jobs:
         inputVars:
           name: deployment-3-pods-cm2
       - objectTemplate: templates/service.yaml
-        replicas: 20
+        replicas: 19
         inputVars:
           name: deployment-pod
       - objectTemplate: templates/service.yaml
+        replicas: 1
+        inputVars:
+          name: single-dep-pod
+      - objectTemplate: templates/service.yaml
         replicas: 5
+        inputVars:
+          name: only-deployment-pod
+      - objectTemplate: templates/service.yaml
+        replicas: 4
         inputVars:
           name: deployment-1-pod
       - objectTemplate: templates/service.yaml

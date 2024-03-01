@@ -27,6 +27,9 @@ spec:
             cpu: 39m
             memory: 138Mi
         imagePullPolicy: IfNotPresent
+        ports:
+         - containerPort: 8080
+           protocol: TCP
         name: {{.name}}
         env:
         - name: ENVVAR1_{{.name}}
