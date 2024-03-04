@@ -4,7 +4,7 @@ apiVersion: apps/v1
 metadata:
   name: {{.name}}-{{.Replica}}
 spec:
-  replicas: 1
+  replicas: 49
   selector:
     matchLabels:
       app: {{.name}}-{{.Replica}}
@@ -26,11 +26,6 @@ spec:
           requests:
             cpu: 39m
             memory: 138Mi
-        volumeMounts:
-        - name: secret-1
-          mountPath: /secret1
-        - name: configmap-1
-          mountPath: /configmap1
         imagePullPolicy: IfNotPresent
         ports:
          - containerPort: 8080
@@ -39,13 +34,6 @@ spec:
         env:
         - name: ENVVAR1_{{.name}}
           value: {{.envVar}}
-      volumes:
-      - name: secret-1
-        secret:
-          secretName: {{.name}}-1
-      - name: configmap-1
-        configMap:
-          name: {{.name}}-1
       # Add not-ready/unreachable tolerations for 15 minutes so that node
       # failure doesn't trigger pod deletion.
       tolerations:
