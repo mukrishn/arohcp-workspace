@@ -1,41 +1,41 @@
 # API server
 
-- query: irate(apiserver_request_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",verb=~"post|patch", resource="pods", code="200"}[2m]) > 0
+- query: irate(apiserver_request_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",verb=~"post|patch", resource="pods", code="200"}[2m]) > 0
   metricName: schedulingThroughput
 
-- query: histogram_quantile(0.99, sum(irate(apiserver_request_duration_seconds_bucket{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",verb=~"LIST|GET", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
+- query: histogram_quantile(0.99, sum(irate(apiserver_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",verb=~"LIST|GET", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
   metricName: readOnlyAPICallsLatency
 
-- query: histogram_quantile(0.99, sum(irate(apiserver_request_duration_seconds_bucket{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",verb=~"POST|PUT|DELETE|PATCH", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
+- query: histogram_quantile(0.99, sum(irate(apiserver_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",verb=~"POST|PUT|DELETE|PATCH", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
   metricName: mutatingAPICallsLatency
 
-- query: sum(irate(apiserver_request_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",verb!="WATCH"}[2m])) by (verb,resource,code) > 0
+- query: sum(irate(apiserver_request_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",verb!="WATCH"}[2m])) by (verb,resource,code) > 0
   metricName: APIRequestRate
 
 # Containers & pod metrics
 
-- query: (sum(irate(container_cpu_usage_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}[2m]) * 100) by (container, pod, instance)) > 0
+- query: (sum(irate(container_cpu_usage_seconds_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}[2m]) * 100) by (container, pod, instance)) > 0
   metricName: containerCPU
 
-- query: sum(container_memory_rss{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}) by (container, pod, node)
+- query: sum(container_memory_rss{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}) by (container, pod, node)
   metricName: containerMemory
 
 # Kubelet & CRI-O runtime metrics
 
-- query: sum(irate(process_cpu_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}[2m]) * 100) by (nstance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
+- query: sum(irate(process_cpu_seconds_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}[2m]) * 100) by (nstance) and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletCPU
 
-- query: sum(process_resident_memory_bytes{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}) by (instance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
+- query: sum(process_resident_memory_bytes{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}) by (instance) and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletMemory
 
 # Node metrics: CPU & Memory
 
-- query: (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")) > 0
+- query: (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")) > 0
   metricName: nodeCPU-Workers
 
 # We compute memory utilization by substrating available memory to the total
 
-- query: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
+- query: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: nodeMemoryUtilization-Workers
 
 # Cluster metrics
@@ -43,47 +43,47 @@
 - query: sum(kube_namespace_status_phase) by (phase) > 0
   metricName: namespaceCount
 
-- query: sum(kube_pod_status_phase{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"}) by (phase)
+- query: sum(kube_pod_status_phase{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}"}) by (phase)
   metricName: podStatusCount
 
-- query: count(kube_secret_info{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"})
+- query: count(kube_secret_info{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}"})
   metricName: secretCount
   instant: true
 
-- query: count(kube_deployment_labels{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"})
+- query: count(kube_deployment_labels{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}"})
   metricName: deploymentCount
   instant: true
 
-- query: count(kube_configmap_info{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"})
+- query: count(kube_configmap_info{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}"})
   metricName: configmapCount
   instant: true
 
-- query: count(kube_service_info{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"})
+- query: count(kube_service_info{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}"})
   metricName: serviceCount
   instant: true
 
-- query: kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"}
+- query: kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}"}
   metricName: nodeRoles
 
-- query: sum(kube_node_status_condition{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",status="true"}) by (condition)
+- query: sum(kube_node_status_condition{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",status="true"}) by (condition)
   metricName: nodeStatus
 
-- query: count(kube_replicaset_labels{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}"})
+- query: count(kube_replicaset_labels{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}"})
   metricName: replicaSetCount
   instant: true
 
-- query: count(kube_pod_info{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",} AND ON (pod) kube_pod_status_phase{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",phase="Running"}==1) by (node)
+- query: count(kube_pod_info{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",} AND ON (pod) kube_pod_status_phase{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",phase="Running"}==1) by (node)
   metricName: podDistribution
 
 # Retain the raw CPU seconds totals for comparison
-- query: sum( node_cpu_seconds_total and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",role="worker",role!="infra"}, "instance", "$1", "node", "(.+)") ) by (mode)
+- query: sum( node_cpu_seconds_total and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker",role!="infra"}, "instance", "$1", "node", "(.+)") ) by (mode)
   metricName: nodeCPUSeconds-Workers
   instant: true
 
-- query: sum (container_cpu_usage_seconds_total {cluster=~".+{{.AKS_MC_CLUSTER_NAME}}", id =~"/system.slice|/system.slice/kubelet.service"} and on (instance) label_replace(kube_node_role{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}", role = "worker",role != "infra" }, "instance", "$1", "node", "(.+)")) by (id)
+- query: sum (container_cpu_usage_seconds_total {cluster=~".*{{.AKS_MC_CLUSTER_NAME}}", id =~"/system.slice|/system.slice/kubelet.service"} and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}", role = "worker",role != "infra" }, "instance", "$1", "node", "(.+)")) by (id)
   metricName: cgroupCPUSeconds-Workers
   instant: true
 
-- query: sum( container_cpu_usage_seconds_total{cluster=~".+{{.AKS_MC_CLUSTER_NAME}}",container!~"POD|"} )  by (namespace)
+- query: sum( container_cpu_usage_seconds_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",container!~"POD|"} )  by (namespace)
   metricName: cgroupCPUSeconds-namespaces
   instant: true
