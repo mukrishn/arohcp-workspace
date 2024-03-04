@@ -13,10 +13,10 @@
   metricName: APIRequestRate
 
 # ETCD latency
-- query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints",operation=~"LIST|GET"}[2m])) by (le, type, operation)) > 0
+- query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints|events|pods",operation=~"LIST|GET"}[2m])) by (le, type, operation)) > 0
   metricName: readOnlyEtcdOperationLatency
 
-- query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints",operation=~"CREATE|DELETE|UPDATE"}[2m])) by (le, type, operation)) > 0
+- query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints|events|pods",operation=~"CREATE|DELETE|UPDATE"}[2m])) by (le, type, operation)) > 0
   metricName: writeEtcdOperationLatency
 
 
