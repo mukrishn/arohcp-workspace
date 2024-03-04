@@ -214,8 +214,8 @@
                             "azureMonitorWorkspaceResourceId": "/subscriptions/1d3378d3-5a3f-4712-85a1-2485495dfc4b/resourcegroups/perf-scale-rg/providers/microsoft.monitor/accounts/perf-scale-azure-monitor-workspace"
                         }
                     ]
-                }
-        	}
+                 }
+            }
         }
     ]
 }
