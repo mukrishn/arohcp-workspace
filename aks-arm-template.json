@@ -198,24 +198,6 @@
                     "startTime": "00:00"
                 }
             }
-        },
-        {
-            "type": "Microsoft.Dashboard/grafana",
-            "apiVersion": "2022-08-01",
-            "name": "perf-scale-grafana",
-            "sku": {
-                "name": "Standard"
-            },
-            "location": "eastus",
-        	"properties": {
-                 "grafanaIntegrations": {
-                    "azureMonitorWorkspaceIntegrations": [
-                        {
-                            "azureMonitorWorkspaceResourceId": "/subscriptions/1d3378d3-5a3f-4712-85a1-2485495dfc4b/resourcegroups/perf-scale-rg/providers/microsoft.monitor/accounts/perf-scale-azure-monitor-workspace"
-                        }
-                    ]
-                }
-        	}
-        }        
+        }       
     ]
 }
