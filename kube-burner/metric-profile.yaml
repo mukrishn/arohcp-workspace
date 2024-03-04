@@ -12,6 +12,14 @@
 - query: sum(irate(apiserver_request_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",verb!="WATCH"}[2m])) by (verb,resource,code) > 0
   metricName: APIRequestRate
 
+# ETCD latency
+- query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints",operation=~"LIST|GET"}[2m])) by (le, type, operation)) > 0
+  metricName: readOnlyEtcdOperationLatency
+
+- query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints",operation=~"CREATE|DELETE|UPDATE"}[2m])) by (le, type, operation)) > 0
+  metricName: writeEtcdOperationLatency
+
+
 # Containers & pod metrics
 
 - query: (sum(irate(container_cpu_usage_seconds_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",name!="",container!~"POD|"}[2m]) * 100) by (container, pod, instance)) > 0
