@@ -36,10 +36,10 @@
 
 # Kubelet & CRI-O runtime metrics
 
-- query: sum(irate(process_cpu_seconds_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}[2m]) * 100) by (job,instance) and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
+- query: sum(irate(process_cpu_seconds_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}[2m]) * 100) by (instance) and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletCPU
 
-- query: sum(process_resident_memory_bytes{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}) by (instance) and on (job,instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
+- query: sum(process_resident_memory_bytes{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}) by (instance) and on (instance) label_replace(kube_node_role{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletMemory
 
 # Node metrics: CPU & Memory
