@@ -12,13 +12,25 @@
 - query: sum(irate(apiserver_request_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",verb!="WATCH"}[2m])) by (verb,resource,code) > 0
   metricName: APIRequestRate
 
-# ETCD latency
+# MC ETCD latency
 - query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints|events|pods",operation=~"LIST|GET"}[2m])) by (le, type, operation)) > 0
   metricName: readOnlyEtcdOperationLatency
 
 - query: histogram_quantile(0.99, sum(irate(etcd_request_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",type=~"configmaps|secrets|deamonsets.apps|deployments.apps|endpoints|events|pods",operation=~"CREATE|DELETE|UPDATE"}[2m])) by (le, type, operation)) > 0
   metricName: writeEtcdOperationLatency
 
+- query: sum(rate(etcd_server_leader_changes_seen_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",}[2m]))
+  metricName: etcdLeaderChangesRate
+
+- query: histogram_quantile(0.99, rate(etcd_disk_backend_commit_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",}[2m]))
+  metricName: 99thEtcdDiskBackendCommitDurationSeconds
+
+- query: histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",}[2m]))
+  metricName: 99thEtcdDiskWalFsyncDurationSeconds
+
+- query: histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",}[5m]))
+  metricName: 99thEtcdRoundTripTimeSeconds
+  
 # Process CPU and Memory metrics
 - query: sum(irate(process_cpu_seconds_total{cluster=~".*{{.AKS_MC_CLUSTER_NAME}}",job="kube-apiserver"}[2m]) * 100) by (instance)
   metricName: APIServerCPU
