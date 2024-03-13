@@ -855,10 +855,10 @@
          "steppedLine": false,
          "targets": [
             {
-               "expr": "sum(apiserver_current_inflight_requests{cluster=\"$cluster\",instance=~\"$instance\"}) by (instance,requestKind)",
+               "expr": "sum(apiserver_current_inflight_requests{cluster=\"$cluster\",instance=~\"$instance\"}) by (instance,request_kind)",
                "format": "time_series",
                "intervalFactor": 2,
-               "legendFormat": "{{requestKind}}-{{instance}}",
+               "legendFormat": "{{request_kind}}-{{instance}}",
                "refId": "A"
             }
          ],
