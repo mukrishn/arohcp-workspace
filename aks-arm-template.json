@@ -107,8 +107,9 @@
                 "supportPlan": "KubernetesOfficial",
                 "networkProfile": {
                     "networkPlugin": "azure",
-                    "networkPolicy": "calico",
-                    "networkDataplane": "azure",
+                    "networkPolicy": "cilium",
+                    "networkDataplane": "cilium",
+                    "networkPluginMode": "overlay",
                     "loadBalancerSku": "Standard",
                     "serviceCidr": "10.0.0.0/16",
                     "dnsServiceIP": "10.0.0.10",
