@@ -62,7 +62,7 @@
                     {
                         "name": "userpool",
                         "count": 24,
-                        "vmSize": "Standard_D8s_v5",
+                        "vmSize": "Standard_D8s_v3",
                         "osDiskSizeGB": 128,
                         "osDiskType": "Ephemeral",
                         "kubeletDiskType": "OS",
