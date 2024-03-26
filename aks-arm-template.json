@@ -142,18 +142,7 @@
                 "oidcIssuerProfile": {
                     "enabled": false
                 },
-                "workloadAutoScalerProfile": {},
-                "azureMonitorProfile": {
-                    "metrics": {
-                        "enabled": true,
-                        "kubeStateMetrics": {}
-                    }
-                },
-                "metricsProfile": {
-                    "costAnalysis": {
-                        "enabled": false
-                    }
-                }
+                "workloadAutoScalerProfile": {}
             }
         },
         {
