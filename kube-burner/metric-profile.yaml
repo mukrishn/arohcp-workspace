@@ -108,7 +108,7 @@
   metricName: replicaSetCount
   instant: true
 
-- query: count(kube_pod_info{cluster="{{.AKS_MC_CLUSTER_NAME}}"} AND ON (pod) kube_pod_status_phase{cluster="{{.AKS_MC_CLUSTER_NAME}}",phase="Running"}==1) by (node)
+- query: sum(kubelet_running_pods{cluster="{{.AKS_MC_CLUSTER_NAME}}"}) by (instance)
   metricName: podDistribution
 
 # Retain the raw CPU seconds totals for comparison
