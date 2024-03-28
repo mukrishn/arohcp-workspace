@@ -28,7 +28,7 @@
                     {
                         "name": "agentpool",
                         "count": 3,
-                        "vmSize": "Standard_D8s_v3",
+                        "vmSize": "Standard_E8s_v3",
                         "osDiskSizeGB": 128,
                         "osDiskType": "Ephemeral",
                         "kubeletDiskType": "OS",
@@ -142,18 +142,7 @@
                 "oidcIssuerProfile": {
                     "enabled": false
                 },
-                "workloadAutoScalerProfile": {},
-                "azureMonitorProfile": {
-                    "metrics": {
-                        "enabled": true,
-                        "kubeStateMetrics": {}
-                    }
-                },
-                "metricsProfile": {
-                    "costAnalysis": {
-                        "enabled": false
-                    }
-                }
+                "workloadAutoScalerProfile": {}
             }
         },
         {
