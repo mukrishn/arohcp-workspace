@@ -25,8 +25,8 @@ spec:
         image: registry.k8s.io/pause:3.1
         resources:
           requests:
-            cpu: 39m
-            memory: 138Mi
+            cpu: 63m
+            memory: 224Mi
         volumeMounts:
         - name: secret-{{.Replica}}
           mountPath: /secret1

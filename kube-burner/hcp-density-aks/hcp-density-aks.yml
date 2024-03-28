@@ -1,6 +1,6 @@
 ---
 global:
-  gc: true
+  gc: false
   measurements:
     - name: podLatency
 
@@ -12,7 +12,7 @@ indexers:
 
 jobs:
   - name: hcp-density-aks
-    jobIterations: 2
+    jobIterations: 1
     qps: 20
     burst: 20
     namespacedIterations: true
