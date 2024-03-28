@@ -1,0 +1,41 @@
+---
+global:
+  measurements:
+    - name: podLatency
+      thresholds:
+        - conditionType: Ready
+          metric: Avg
+          threshold: 5s
+
+indexers:
+ - type: opensearch
+   esServers: ["https://search-perfscale-dev-chmf5l4sh66lvxbnadi4bznl3a.us-west-2.es.amazonaws.com:443"]
+   insecureSkipVerify: true
+   defaultIndex: "ripsaw-kube-burner"
+
+jobs:
+  - name: kubelet-density-cni
+    jobIterations: 2400
+    qps: 20
+    burst: 20
+    namespacedIterations: false
+    namespace: kubelet-density-cni
+    waitWhenFinished: true
+    podWait: false
+    preLoadImages: true
+    preLoadPeriod: 10s
+    namespaceLabels:
+      security.openshift.io/scc.podSecurityLabelSync: false
+      pod-security.kubernetes.io/enforce: privileged
+      pod-security.kubernetes.io/audit: privileged
+      pod-security.kubernetes.io/warn: privileged
+    objects:
+
+      - objectTemplate: templates/webserver-deployment.yml
+        replicas: 1
+
+      - objectTemplate: templates/webserver-service.yml
+        replicas: 1
+
+      - objectTemplate: templates/curl-deployment.yml
+        replicas: 1

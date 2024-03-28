@@ -1,7 +1,14 @@
 ---
 global:
+  gc: true
   measurements:
     - name: podLatency
+
+indexers:
+ - type: opensearch
+   esServers: ["https://search-perfscale-dev-chmf5l4sh66lvxbnadi4bznl3a.us-west-2.es.amazonaws.com:443"]
+   insecureSkipVerify: true
+   defaultIndex: "ripsaw-kube-burner"
 
 jobs:
   - name: hcp-density-aks
@@ -12,6 +19,13 @@ jobs:
     namespace: hcp-density-aks
     podWait: false
     waitWhenFinished: true
+    preLoadImages: true
+    preLoadPeriod: 10s
+    namespaceLabels:
+      security.openshift.io/scc.podSecurityLabelSync: false
+      pod-security.kubernetes.io/enforce: privileged
+      pod-security.kubernetes.io/audit: privileged
+      pod-security.kubernetes.io/warn: privileged
     objects:
       - objectTemplate: templates/deployment.yaml
         replicas: 18
