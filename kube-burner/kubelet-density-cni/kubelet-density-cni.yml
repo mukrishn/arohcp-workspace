@@ -18,7 +18,7 @@ jobs:
     jobIterations: 2400
     qps: 20
     burst: 20
-    namespacedIterations: false
+    namespacedIterations: true
     namespace: kubelet-density-cni
     waitWhenFinished: true
     podWait: false
