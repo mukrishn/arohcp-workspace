@@ -78,15 +78,15 @@ jobs:
         inputVars:
           name: deployment-2-pods-secret1
       - objectTemplate: templates/secret.yaml
-        replicas: 15
+        replicas: 21
         inputVars:
           name: deployment-3-pods-secret0
       - objectTemplate: templates/secret.yaml
-        replicas: 15
+        replicas: 21
         inputVars:
           name: deployment-3-pods-secret1
       - objectTemplate: templates/secret.yaml
-        replicas: 15
+        replicas: 21
         inputVars:
           name: deployment-3-pods-secret2
       - objectTemplate: templates/configmap.yaml
