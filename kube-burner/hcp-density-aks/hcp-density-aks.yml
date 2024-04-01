@@ -12,7 +12,7 @@ indexers:
 
 jobs:
   - name: hcp-density-aks
-    jobIterations: 1
+    jobIterations: 33
     qps: 20
     burst: 20
     namespacedIterations: true
@@ -94,7 +94,7 @@ jobs:
         inputVars:
           name: deployment-pod
       - objectTemplate: templates/configmap.yaml
-        replicas: 41
+        replicas: 20
         inputVars:
           name: single-dep-pod
       - objectTemplate: templates/configmap.yaml
@@ -106,23 +106,11 @@ jobs:
         inputVars:
           name: deployment-2-pods-cm0
       - objectTemplate: templates/configmap.yaml
-        replicas: 2
-        inputVars:
-          name: deployment-2-pods-cm1
-      - objectTemplate: templates/configmap.yaml
         replicas: 15
         inputVars:
           name: deployment-3-pods-cm0
-      - objectTemplate: templates/configmap.yaml
-        replicas: 15
-        inputVars:
-          name: deployment-3-pods-cm1
-      - objectTemplate: templates/configmap.yaml
-        replicas: 15
-        inputVars:
-          name: deployment-3-pods-cm2
       - objectTemplate: templates/service.yaml
-        replicas: 19
+        replicas: 29
         inputVars:
           name: deployment-pod
       - objectTemplate: templates/service.yaml

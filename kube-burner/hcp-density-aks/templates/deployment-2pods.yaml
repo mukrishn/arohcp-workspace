@@ -25,13 +25,11 @@ spec:
         image: registry.k8s.io/pause:3.1
         resources:
           requests:
-            cpu: 63m
-            memory: 224Mi
+            cpu: 43m
+            memory: 154Mi
         volumeMounts:
         - name: secret-{{.Replica}}
           mountPath: /secret1
-        - name: configmap-{{.Replica}}
-          mountPath: /configmap1
         imagePullPolicy: IfNotPresent
         ports:
          - containerPort: 8080
@@ -51,8 +49,6 @@ spec:
         volumeMounts:
         - name: secret-{{.Replica}}-1
           mountPath: /secret1
-        - name: configmap-{{.Replica}}-1
-          mountPath: /configmap1
         imagePullPolicy: IfNotPresent
         ports:
          - containerPort: 8080
@@ -70,9 +66,6 @@ spec:
       - name: configmap-{{.Replica}}
         configMap:
           name: {{.name}}-cm0-{{.Replica}}
-      - name: configmap-{{.Replica}}-1
-        configMap:
-          name: {{.name}}-cm1-{{.Replica}}
       # Add not-ready/unreachable tolerations for 15 minutes so that node
       # failure doesn't trigger pod deletion.
       tolerations:
