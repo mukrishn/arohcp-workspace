@@ -25,8 +25,8 @@ spec:
         image: registry.k8s.io/pause:3.1
         resources:
           requests:
-            cpu: 39m
-            memory: 138Mi
+            cpu: 63m
+            memory: 224Mi
         volumeMounts:
         - name: secret-{{.Replica}}
           mountPath: /secret0
@@ -43,16 +43,16 @@ spec:
         args:
         - sleep
         - infinity
-        image: registry.k8s.io/pause:3.1
+        image: quay.io/cloud-bulldozer/curl:latest
         resources:
           requests:
-            cpu: 39m
-            memory: 138Mi
+            cpu: 43m
+            memory: 154Mi
         volumeMounts:
-        - name: secret-{{.Replica}}-1
-          mountPath: /secret1
-        - name: configmap-{{.Replica}}-1
-          mountPath: /configmap1
+        - name: secret-{{.Replica}}
+          mountPath: /secret
+        - name: configmap-{{.Replica}}
+          mountPath: /configmap
         imagePullPolicy: IfNotPresent
         ports:
          - containerPort: 8080
@@ -64,16 +64,16 @@ spec:
         args:
         - sleep
         - infinity
-        image: registry.k8s.io/pause:3.1
+        image: quay.io/cloud-bulldozer/sampleapp:latest
         resources:
           requests:
-            cpu: 39m
-            memory: 138Mi
+            cpu: 43m
+            memory: 154Mi
         volumeMounts:
-        - name: secret-{{.Replica}}-2
-          mountPath: /secret2
-        - name: configmap-{{.Replica}}-2
-          mountPath: /configmap2
+        - name: secret-{{.Replica}}
+          mountPath: /secret
+        - name: configmap-{{.Replica}}
+          mountPath: /configmap
         imagePullPolicy: IfNotPresent
         ports:
          - containerPort: 8080
@@ -85,21 +85,9 @@ spec:
       - name: secret-{{.Replica}}
         secret:
           secretName: {{.name}}-secret0-{{.Replica}}
-      - name: secret-{{.Replica}}-1
-        secret:
-          secretName: {{.name}}-secret1-{{.Replica}}
-      - name: secret-{{.Replica}}-2
-        secret:
-          secretName: {{.name}}-secret2-{{.Replica}}
       - name: configmap-{{.Replica}}
         configMap:
           name: {{.name}}-cm0-{{.Replica}}
-      - name: configmap-{{.Replica}}-1
-        configMap:
-          name: {{.name}}-cm1-{{.Replica}}
-      - name: configmap-{{.Replica}}-2
-        configMap:
-          name: {{.name}}-cm2-{{.Replica}}
       # Add not-ready/unreachable tolerations for 15 minutes so that node
       # failure doesn't trigger pod deletion.
       tolerations:
