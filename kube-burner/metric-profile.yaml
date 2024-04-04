@@ -69,7 +69,7 @@
 - query: (sum(irate(container_cpu_usage_seconds_total{cluster="{{.AKS_MC_CLUSTER_NAME}}",id="/system.slice/containerd.service"}[2m])*100) by (container, pod, instance)) > 0
   metricName: containerdCPU
 
-- query: (sum(irate(container_memory_rss{cluster="{{.AKS_MC_CLUSTER_NAME}}",id="/system.slice/containerd.service"}[2m])*100) by (container, pod, instance)) > 0
+- query: sum(container_memory_rss{cluster="{{.AKS_MC_CLUSTER_NAME}}",id="/system.slice/containerd.service"}) by (container, pod, instance)
   metricName: containerdMemory
   
 # Node metrics: CPU & Memory
