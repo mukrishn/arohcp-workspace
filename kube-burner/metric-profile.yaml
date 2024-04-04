@@ -56,7 +56,7 @@
 - query: sum(container_memory_rss{cluster="{{.AKS_MC_CLUSTER_NAME}}",name!=""}) by (container, pod, instance)
   metricName: containerMemory
 
-# Kubelet & CRI-O runtime metrics
+# Kubelet & Containerd runtime metrics
 
 - query: sum(irate(process_cpu_seconds_total{cluster="{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}[2m]) * 100) by (instance) and on (instance) label_replace(kube_node_role{cluster="{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletCPU
@@ -64,6 +64,14 @@
 - query: sum(process_resident_memory_bytes{cluster="{{.AKS_MC_CLUSTER_NAME}}",job="kubelet"}) by (instance) and on (instance) label_replace(kube_node_role{cluster="{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")
   metricName: kubeletMemory
 
+# Containerd Usage
+
+- query: (sum(irate(container_cpu_usage_seconds_total{cluster="{{.AKS_MC_CLUSTER_NAME}}",id="/system.slice/containerd.service"}[2m])*100) by (container, pod, instance)) > 0
+  metricName: containerdCPU
+
+- query: (sum(irate(container_memory_rss{cluster="{{.AKS_MC_CLUSTER_NAME}}",id="/system.slice/containerd.service"}[2m])*100) by (container, pod, instance)) > 0
+  metricName: containerdMemory
+  
 # Node metrics: CPU & Memory
 
 - query: (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{cluster="{{.AKS_MC_CLUSTER_NAME}}",role="worker"}, "instance", "$1", "node", "(.+)")) > 0
@@ -110,19 +118,6 @@
 
 - query: sum(kubelet_running_pods{cluster="{{.AKS_MC_CLUSTER_NAME}}"}) by (instance)
   metricName: podDistribution
-
-# Retain the raw CPU seconds totals for comparison
-- query: sum( node_cpu_seconds_total and on (instance) label_replace(kube_node_role{cluster="{{.AKS_MC_CLUSTER_NAME}}",role="worker",role!="infra"}, "instance", "$1", "node", "(.+)") ) by (mode)
-  metricName: nodeCPUSeconds-Workers
-  instant: true
-
-- query: sum (container_cpu_usage_seconds_total{cluster="{{.AKS_MC_CLUSTER_NAME}}", id =~"/system.slice|/system.slice/kubelet.service"} and on (instance) label_replace(kube_node_role{cluster="{{.AKS_MC_CLUSTER_NAME}}", role = "worker",role != "infra" }, "instance", "$1", "node", "(.+)")) by (id)
-  metricName: cgroupCPUSeconds-Workers
-  instant: true
-
-- query: sum( container_cpu_usage_seconds_total{cluster="{{.AKS_MC_CLUSTER_NAME}}"} )  by (namespace)
-  metricName: cgroupCPUSeconds-namespaces
-  instant: true
 
 # Kubeproxy and OVN service sync latency
 
