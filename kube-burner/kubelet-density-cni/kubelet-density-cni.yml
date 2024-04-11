@@ -7,15 +7,9 @@ global:
           metric: Avg
           threshold: 5s
 
-indexers:
- - type: opensearch
-   esServers: ["https://search-perfscale-dev-chmf5l4sh66lvxbnadi4bznl3a.us-west-2.es.amazonaws.com:443"]
-   insecureSkipVerify: true
-   defaultIndex: "ripsaw-kube-burner"
-
 jobs:
   - name: kubelet-density-cni
-    jobIterations: 2400
+    jobIterations: 12000
     qps: 20
     burst: 20
     namespacedIterations: true
