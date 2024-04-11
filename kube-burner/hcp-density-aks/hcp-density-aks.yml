@@ -21,6 +21,10 @@ jobs:
     waitWhenFinished: true
     preLoadImages: true
     preLoadPeriod: 10s
+    churn: true
+    churnPercent: 10
+    churnDelay: 5m
+    churnDuration: 20m    
     namespaceLabels:
       security.openshift.io/scc.podSecurityLabelSync: false
       pod-security.kubernetes.io/enforce: privileged
