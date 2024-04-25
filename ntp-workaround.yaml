@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: chronyd-restart
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: chronyd-restart
+  template:
+    metadata:
+      labels:
+        name: chronyd-restart
+    spec:
+      hostPID: true
+      hostNetwork: true
+      containers:
+      - name: chronyd-restart
+        image: ubuntu
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          chroot /host sh -c "systemctl restart chronyd"
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: host
+          mountPath: /host
+      volumes:
+      - name: host
+        hostPath:
+          path: /
