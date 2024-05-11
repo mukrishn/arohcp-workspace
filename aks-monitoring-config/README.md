@@ -15,8 +15,11 @@
 * By default Prometheus will scrape metrics from `default`, `kube-system`, `monitoring` namespaces
 * In order to include additional servicemonitors, it needs privileges to access them
 * Create `prometheus-roleSpecificNamespaces.yaml` and `prometheus-roleBindingSpecificNamespaces.yaml` - example include `hypershift` and `cluster-aks-hosted-cp` namespaces only
+* Also label `monitoring` namespace to allow HCP scrapping from external namespace - `k label ns monitoring network.openshift.io/policy-group=monitoring
+`
 * For every new HCP namespace we need to create this role and role binding post hostedcluster creation
 * Watch prometheus-k8s logs, to see if they start scraping metrics from these additional namespace
+  
 
 ## Access it externally
 * Expose prometheus-k8s publicly using `Loadbalancer` service type
