@@ -25,7 +25,7 @@
                 "type": "SystemAssigned"
             },
             "properties": {
-                "kubernetesVersion": "1.28.3",
+                "kubernetesVersion": "1.28.5",
                 "dnsPrefix": "[concat(parameters('aks_cluster_name'), '-dns')]",
                 "agentPoolProfiles": [
                     {
@@ -46,7 +46,7 @@
                         "powerState": {
                             "code": "Running"
                         },
-                        "orchestratorVersion": "1.28.3",
+                        "orchestratorVersion": "1.28.5",
                         "enableNodePublicIP": false,
                         "nodeTaints": [
                             "CriticalAddonsOnly=true:NoSchedule"
@@ -80,7 +80,7 @@
                         "powerState": {
                             "code": "Running"
                         },
-                        "orchestratorVersion": "1.28.3",
+                        "orchestratorVersion": "1.28.5",
                         "enableNodePublicIP": false,
                         "mode": "User",
                         "osType": "Linux",
