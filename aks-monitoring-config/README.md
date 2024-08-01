@@ -10,6 +10,14 @@
 * Clone https://github.com/prometheus-operator/kube-prometheus.git
 * Install Kube-prometheus-stack following this https://github.com/prometheus-operator/kube-prometheus?tab=readme-ov-file#quickstart
 * Make sure they are up and running
+* Move them to system agentpool manually by editing `prometheus` and `alertmanager` CRD in `monitoring` namespace and the below selector and tolerations to it.
+  ```
+    nodeSelector:
+    agentpool: system
+  tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  ```
 
 ## Configure to scrape from servicemonitors
 * By default Prometheus will scrape metrics from `default`, `kube-system`, `monitoring` namespaces
