@@ -12,7 +12,7 @@
 * Make sure they are up and running
 * Move them to system agentpool manually by editing `prometheus` and `alertmanager` CRD in `monitoring` namespace and the below selector and tolerations to it.
   ```
-    nodeSelector:
+  nodeSelector:
     agentpool: system
   tolerations:
   - key: CriticalAddonsOnly
