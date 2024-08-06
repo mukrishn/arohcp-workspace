@@ -39,3 +39,15 @@
 bash-5.2# curl -k "http://10.0.223.31:9090/api/v1/query?query=sum(etcd_requests_total)by(namespace)"
 {"status":"success","data":{"resultType":"vector","result":[{"metric":{"namespace":"default"},"value":[1715176072.599,"404828"]},{"metric":{"namespace":"clusters-aks-hosted-cp-1"},"value":[1715176072.599,"147178"]},{"metric":{"namespace":"clusters-aks-hosted-cp-3"},"value":[1715176072.599,"105547"]}]}}
 ```
+
+## Run a workload
+* Git clone e2e benchmarking workload
+
+```
+export AZURE_PROM=https://managed-azure-prometheus.azure.com
+export AKS_PROM=http://10.0.223.31:9090
+export AZURE_PROM_TOKEN=$(curl --request POST 'https://login.microsoftonline.com/tenantidforazure/oauth2/v2.0/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=clientidforazure' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_secret=secrettoeknforazure' --data-urlencode 'scope=https://prometheus.monitor.azure.com/.default' | jq -r '.access_token')
+export WORKLOAD=crd-scale
+
+ES_SERVER=https://admin:nKNQ9=vw_bwaSy1@search-perfscale-pro-wxrjvmobqs7gsyi3xvxkqmn7am.us-west-2.es.amazonaws.com:443 WORKLOAD=${WORKLOAD} ./run.sh 
+```
