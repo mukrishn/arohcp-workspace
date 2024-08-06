@@ -49,5 +49,5 @@ export AKS_PROM=http://10.0.223.31:9090
 export AZURE_PROM_TOKEN=$(curl --request POST 'https://login.microsoftonline.com/tenantidforazure/oauth2/v2.0/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=clientidforazure' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_secret=secrettoeknforazure' --data-urlencode 'scope=https://prometheus.monitor.azure.com/.default' | jq -r '.access_token')
 export WORKLOAD=crd-scale
 
-ES_SERVER=https://admin:nKNQ9=vw_bwaSy1@search-perfscale-pro-wxrjvmobqs7gsyi3xvxkqmn7am.us-west-2.es.amazonaws.com:443 WORKLOAD=${WORKLOAD} ./run.sh 
+ES_SERVER=https://admin:testpassword@search-perfscale-proxkqmn7am.us-west-2.es.amazonaws.com:443 WORKLOAD=${WORKLOAD} ./run.sh 
 ```
