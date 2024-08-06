@@ -11,10 +11,10 @@ export WORKLOAD=${WORKLOAD:-kubelet-density}
 
 if [[ $WORKLOAD == "kubelet-density-cni" || $WORKLOAD == "kubelet-density" || $WORKLOAD == "cluster-density-k8s" || $WORKLOAD == "hcp-density-aks" ]]; then
     pushd $PWD/kube-burner/$WORKLOAD
-    export START_TIME=$(date +"%s")
+    # export START_TIME=$(date +"%s")
     kube-burner init --config $WORKLOAD.yaml --prometheus-url="$PROM_URL" --token "$TOKEN" --metrics-profile "$METRIC_PROFILE" --skip-tls-verify
-    export END_TIME=$(date +"%s")
-    kube-burner index --uuid=${UUID} --prometheus-url=${PROM_URL} --token ${TOKEN} --start=$START_TIME --end=$END_TIME --metrics-profile ${METRIC_PROFILE} --skip-tls-verify --es-server=${ES_SERVER} --es-index=${ES_INDEX}
+    # export END_TIME=$(date +"%s")
+    # kube-burner index --uuid=${UUID} --prometheus-url=${PROM_URL} --token ${TOKEN} --start=$START_TIME --end=$END_TIME --metrics-profile ${METRIC_PROFILE} --skip-tls-verify --es-server=${ES_SERVER} --es-index=${ES_INDEX}
     kubectl delete ns -l kube-burner-job=${WORKLOAD}
     popd
 else
