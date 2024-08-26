@@ -18,6 +18,7 @@
   - key: CriticalAddonsOnly
     operator: Exists
   ```
+* Also remove resource limits from node-exporter as they often need more memory at scale and kubelet would kill it when OOM.
 
 ## Configure to scrape from servicemonitors
 * By default Prometheus will scrape metrics from `default`, `kube-system`, `monitoring` namespaces
