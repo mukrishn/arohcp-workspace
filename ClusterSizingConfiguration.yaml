@@ -1,0 +1,70 @@
+apiVersion: scheduling.hypershift.openshift.io/v1alpha1
+kind: ClusterSizingConfiguration
+metadata:
+  name: cluster
+spec:
+  concurrency:
+    limit: 5
+    slidingWindow: 0s
+  sizes:
+  - criteria:
+      from: 0
+      to: 63
+    effects:
+      maximumMutatingRequestsInflight: 50
+      maximumRequestsInflight: 150
+      resourceRequests:
+      - containerName: kube-apiserver
+        deploymentName: kube-apiserver
+        memory: 8Gi
+    name: small
+  - criteria:
+      from: 64
+      to: 122
+    effects:
+      kasGoMemLimit: 12GiB
+      maximumMutatingRequestsInflight: 300
+      maximumRequestsInflight: 900
+      resourceRequests:
+      - containerName: kube-apiserver
+        deploymentName: kube-apiserver
+        memory: 16Gi
+    name: medium
+  - criteria:
+      from: 123
+      to: 252
+    effects:
+      kasGoMemLimit: 24GiB
+      maximumMutatingRequestsInflight: 400
+      maximumRequestsInflight: 1200
+      resourceRequests:
+      - containerName: kube-apiserver
+        deploymentName: kube-apiserver
+        memory: 32Gi
+    name: large
+  - criteria:
+      from: 253
+      to: 362
+    effects:
+      kasGoMemLimit: 48GiB
+      maximumMutatingRequestsInflight: 1000
+      maximumRequestsInflight: 3000
+      resourceRequests:
+      - containerName: kube-apiserver
+        deploymentName: kube-apiserver
+        memory: 64Gi
+    name: xlarge        
+  - criteria:
+      from: 363      
+    effects:      
+      kasGoMemLimit: 96GiB
+      maximumMutatingRequestsInflight: 1000
+      maximumRequestsInflight: 3000
+      resourceRequests:
+      - containerName: kube-apiserver
+        deploymentName: kube-apiserver
+        memory: 128Gi
+    name: xxlarge
+  transitionDelay:
+    decrease: 0s
+    increase: 0s
