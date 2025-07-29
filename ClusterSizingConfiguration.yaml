@@ -57,11 +57,11 @@ spec:
   - criteria:
       from: 361
     effects:      
-      kasGoMemLimit: 96GiB
+      kasGoMemLimit: 72GiB
       resourceRequests:
       - containerName: kube-apiserver
         deploymentName: kube-apiserver
-        memory: 128Gi
+        memory: 96Gi
     name: xxlarge
   transitionDelay:
     decrease: 0s
