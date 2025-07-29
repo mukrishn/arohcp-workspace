@@ -9,7 +9,7 @@ spec:
   sizes:
   - criteria:
       from: 0
-      to: 63
+      to: 60
     effects:
       maximumMutatingRequestsInflight: 50
       maximumRequestsInflight: 150
@@ -19,8 +19,8 @@ spec:
         memory: 8Gi
     name: small
   - criteria:
-      from: 64
-      to: 122
+      from: 61
+      to: 120
     effects:
       kasGoMemLimit: 12GiB
       maximumMutatingRequestsInflight: 300
@@ -31,7 +31,7 @@ spec:
         memory: 16Gi
     name: medium
   - criteria:
-      from: 123
+      from: 121
       to: 252
     effects:
       kasGoMemLimit: 24GiB
@@ -44,7 +44,7 @@ spec:
     name: large
   - criteria:
       from: 253
-      to: 362
+      to: 360
     effects:
       kasGoMemLimit: 48GiB
       maximumMutatingRequestsInflight: 600
@@ -55,11 +55,9 @@ spec:
         memory: 64Gi
     name: xlarge        
   - criteria:
-      from: 363      
+      from: 361
     effects:      
       kasGoMemLimit: 96GiB
-      maximumMutatingRequestsInflight: 1000
-      maximumRequestsInflight: 3000
       resourceRequests:
       - containerName: kube-apiserver
         deploymentName: kube-apiserver
