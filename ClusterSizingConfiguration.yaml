@@ -17,6 +17,18 @@ spec:
       - containerName: kube-apiserver
         deploymentName: kube-apiserver
         memory: 8Gi
+      - containerName: openshift-controller-manager
+        deploymentName: openshift-controller-manager
+        memory: 1Gi
+      - containerName: cluster-policy-controller
+        deploymentName: cluster-policy-controller
+        memory: 1Gi
+      - containerName: kube-controller-manager
+        deploymentName: kube-controller-manager
+        memory: 1Gi
+      - containerName: openshift-apiserver
+        deploymentName: openshift-apiserver
+        memory: 1Gi
     name: small
   - criteria:
       from: 61
