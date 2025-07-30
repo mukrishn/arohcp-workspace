@@ -31,7 +31,10 @@ spec:
         memory: 1Gi
       - containerName: etcd
         deploymentName: etcd
-        memory: 1Gi        
+        memory: 1Gi
+      - containerName: ovnkube-control-plane
+        deploymentName: ovnkube-control-plane
+        memory: 500Mi
     name: small
   - criteria:
       from: 61
@@ -44,6 +47,27 @@ spec:
       - containerName: kube-apiserver
         deploymentName: kube-apiserver
         memory: 16Gi
+      - containerName: openshift-controller-manager
+        deploymentName: openshift-controller-manager
+        memory: 2Gi
+      - containerName: cluster-policy-controller
+        deploymentName: cluster-policy-controller
+        memory: 2Gi
+      - containerName: kube-controller-manager
+        deploymentName: kube-controller-manager
+        memory: 2Gi
+      - containerName: openshift-apiserver
+        deploymentName: openshift-apiserver
+        memory: 1Gi
+      - containerName: etcd
+        deploymentName: etcd
+        memory: 1Gi
+      - containerName: kube-scheduler
+        deploymentName: kube-scheduler
+        memory: 1Gi
+      - containerName: ovnkube-control-plane
+        deploymentName: ovnkube-control-plane
+        memory: 500Mi
     name: medium
   - criteria:
       from: 121
@@ -56,6 +80,27 @@ spec:
       - containerName: kube-apiserver
         deploymentName: kube-apiserver
         memory: 32Gi
+      - containerName: openshift-controller-manager
+        deploymentName: openshift-controller-manager
+        memory: 3Gi
+      - containerName: cluster-policy-controller
+        deploymentName: cluster-policy-controller
+        memory: 2Gi
+      - containerName: kube-controller-manager
+        deploymentName: kube-controller-manager
+        memory: 2Gi
+      - containerName: openshift-apiserver
+        deploymentName: openshift-apiserver
+        memory: 2Gi
+      - containerName: etcd
+        deploymentName: etcd
+        memory: 2Gi
+      - containerName: kube-scheduler
+        deploymentName: kube-scheduler
+        memory: 2Gi
+      - containerName: ovnkube-control-plane
+        deploymentName: ovnkube-control-plane
+        memory: 1Gi
     name: large
   - criteria:
       from: 253
@@ -68,6 +113,27 @@ spec:
       - containerName: kube-apiserver
         deploymentName: kube-apiserver
         memory: 64Gi
+      - containerName: openshift-controller-manager
+        deploymentName: openshift-controller-manager
+        memory: 6Gi
+      - containerName: cluster-policy-controller
+        deploymentName: cluster-policy-controller
+        memory: 6Gi
+      - containerName: kube-controller-manager
+        deploymentName: kube-controller-manager
+        memory: 6Gi
+      - containerName: openshift-apiserver
+        deploymentName: openshift-apiserver
+        memory: 6Gi
+      - containerName: etcd
+        deploymentName: etcd
+        memory: 2Gi
+      - containerName: kube-scheduler
+        deploymentName: kube-scheduler
+        memory: 3Gi
+      - containerName: ovnkube-control-plane
+        deploymentName: ovnkube-control-plane
+        memory: 2Gi
     name: xlarge        
   - criteria:
       from: 361
@@ -77,6 +143,27 @@ spec:
       - containerName: kube-apiserver
         deploymentName: kube-apiserver
         memory: 96Gi
+      - containerName: openshift-controller-manager
+        deploymentName: openshift-controller-manager
+        memory: 8Gi
+      - containerName: cluster-policy-controller
+        deploymentName: cluster-policy-controller
+        memory: 8Gi
+      - containerName: kube-controller-manager
+        deploymentName: kube-controller-manager
+        memory: 8Gi
+      - containerName: openshift-apiserver
+        deploymentName: openshift-apiserver
+        memory: 8Gi
+      - containerName: etcd
+        deploymentName: etcd
+        memory: 3Gi
+      - containerName: kube-scheduler
+        deploymentName: kube-scheduler
+        memory: 6Gi
+      - containerName: ovnkube-control-plane
+        deploymentName: ovnkube-control-plane
+        memory: 2Gi        
     name: xxlarge
   transitionDelay:
     decrease: 0s
