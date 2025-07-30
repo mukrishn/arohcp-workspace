@@ -29,6 +29,9 @@ spec:
       - containerName: openshift-apiserver
         deploymentName: openshift-apiserver
         memory: 1Gi
+      - containerName: etcd
+        deploymentName: etcd
+        memory: 1Gi        
     name: small
   - criteria:
       from: 61
