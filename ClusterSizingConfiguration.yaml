@@ -56,6 +56,9 @@ spec:
       - containerName: kube-controller-manager
         deploymentName: kube-controller-manager
         memory: 2Gi
+      - containerName: cluster-autoscaler
+        deploymentName: cluster-autoscaler
+        memory: 2Gi
       - containerName: openshift-apiserver
         deploymentName: openshift-apiserver
         memory: 1Gi
@@ -82,13 +85,16 @@ spec:
         memory: 32Gi
       - containerName: openshift-controller-manager
         deploymentName: openshift-controller-manager
-        memory: 3Gi
+        memory: 3Gi        
       - containerName: cluster-policy-controller
         deploymentName: cluster-policy-controller
         memory: 2Gi
       - containerName: kube-controller-manager
         deploymentName: kube-controller-manager
         memory: 2Gi
+      - containerName: cluster-autoscaler
+        deploymentName: cluster-autoscaler
+        memory: 4Gi        
       - containerName: openshift-apiserver
         deploymentName: openshift-apiserver
         memory: 2Gi
@@ -98,9 +104,12 @@ spec:
       - containerName: kube-scheduler
         deploymentName: kube-scheduler
         memory: 2Gi
+      - containerName: multus-admission-controller
+        deploymentName: multus-admission-controller
+        memory: 1Gi
       - containerName: ovnkube-control-plane
         deploymentName: ovnkube-control-plane
-        memory: 1Gi
+        memory: 1Gi        
     name: large
   - criteria:
       from: 253
@@ -124,13 +133,19 @@ spec:
         memory: 6Gi
       - containerName: openshift-apiserver
         deploymentName: openshift-apiserver
-        memory: 6Gi
+        memory: 8Gi
+      - containerName: cluster-autoscaler
+        deploymentName: cluster-autoscaler
+        memory: 6Gi        
       - containerName: etcd
         deploymentName: etcd
         memory: 2Gi
       - containerName: kube-scheduler
         deploymentName: kube-scheduler
         memory: 3Gi
+      - containerName: multus-admission-controller
+        deploymentName: multus-admission-controller
+        memory: 2Gi
       - containerName: ovnkube-control-plane
         deploymentName: ovnkube-control-plane
         memory: 2Gi
@@ -155,12 +170,18 @@ spec:
       - containerName: openshift-apiserver
         deploymentName: openshift-apiserver
         memory: 8Gi
+      - containerName: cluster-autoscaler
+        deploymentName: cluster-autoscaler
+        memory: 12Gi
       - containerName: etcd
         deploymentName: etcd
         memory: 3Gi
       - containerName: kube-scheduler
         deploymentName: kube-scheduler
         memory: 6Gi
+      - containerName: multus-admission-controller
+        deploymentName: multus-admission-controller
+        memory: 3Gi
       - containerName: ovnkube-control-plane
         deploymentName: ovnkube-control-plane
         memory: 2Gi        
