@@ -52,18 +52,22 @@ az deployment group create --name 'aro-hcp-auth' --subscription "${SUBSCRIPTION}
 Get the resourceId of the ARO-HCP
 ```
 az resource list --subscription "${SUBSCRIPTION}" --resource-group "${CUSTOMER_RG_NAME}" --resource-type "Microsoft.RedHatOpenShift/hcpOpenShiftClusters" | jq '.[].id'
-
-# Use that resourceId in following command
-# Ensure to run this commands with --debug
+```
+Use that resourceId in following command, ensure to run this commands with --debug
+```
 az rest --method POST --debug --uri "<RESOURCE_ID>/requestadmincredential?api-version=2024-06-10-preview"
-
-# From the response header of previous output, capture the Location value and use it in the following command
+```
+From the response header of previous output, capture the Location value and use it in the following command - super long URL
+```
 az rest --method GET --uri "<Location>" | jq -r '.kubeconfig' > aro-hcp-kubeconfig
+```
 
+```
+export KUBECONFIG=aro-hcp-kubeconfig
 oc create secret generic ${EXTERNAL_AUTH_NAME}-console-openshift-console --namespace openshift-config --from-literal=clientSecret=${CLIENT_SECRET}
 export GROUP_ID=$(az ad group show --group "aro-hcp-perfscale" --query id -o tsv)
 ```
-
+Apply this role binding to get your external auth
 ```yaml
 oc apply -f - <<EOF
 apiVersion: rbac.authorization.k8s.io/v1
