@@ -1,0 +1,18 @@
+loader: "vegeta"
+rate: 100
+
+#loader: "wrk"
+#concurrency: 10
+#connectionsPerClient: 100
+#logWrkOutput: true
+  #luaScriptPath: "/root/hypershift/azure/aks/arohcp-workspace/aks-monitoring-config/scripts/kas-ingress/wrk_format.lua"
+  
+kubeconfigs:
+  - /tmp/kubeconfig-mukhcp-0001
+  - /tmp/kubeconfig-mukhcp-0002
+  - /tmp/kubeconfig-mukhcp-0003
+duration: 60s
+
+apiCallSamples:
+  - endpoint: "/api/v1/pods"
+    samples: 1
