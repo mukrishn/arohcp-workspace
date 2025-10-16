@@ -1,3 +1,6 @@
+# Script to run this end to end
+To run this e2e there is a script in this repo, `create_aro_hcp.sh`
+
 # Login your Azure account using az CLI
 ```
 az login
